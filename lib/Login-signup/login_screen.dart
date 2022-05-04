@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +9,8 @@ import 'package:glass_kit/glass_kit.dart';
 import 'package:svg_icon/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/palette.dart';
+
+import '../main.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -138,9 +142,10 @@ class _LoginState extends State<Login> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Text('Create an account'),
                                 TextButton(
                                   onPressed: () {},
-                                  child: Text("Forgot Password?",
+                                  child: Text("Sign up",
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: Palette.textColor1,
@@ -227,8 +232,12 @@ class _LoginState extends State<Login> {
   }
 
   Future signin() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailcontroller.text.trim(),
-        password: passwordcontroller.text.trim());
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailcontroller.text.trim(),
+          password: passwordcontroller.text.trim());
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
   }
 }

@@ -18,10 +18,13 @@ Future main() async {
   runApp(MyApp());
 }
 
+final navigatorkey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorkey,
       debugShowCheckedModeBanner: false,
       title: 'Smart IOT',
       home: Main(),
@@ -52,7 +55,16 @@ class _MainState extends State<Main> {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: CircularProgressIndicator(
+              backgroundColor: Colors.white12,
+            ));
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Something went wrong'),
+            );
+          } else if (snapshot.hasData) {
             return Dasgboard();
           } else {
             return Login();
