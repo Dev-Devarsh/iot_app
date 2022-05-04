@@ -45,6 +45,7 @@ dependencies:
   firebase: ^9.0.2
   firebase_auth: ^3.3.16
   firebase_core: ^1.15.0
+  google_fonts: ^2.3.2
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../dashboard.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:svg_icon/svg_icon.dart';
@@ -31,7 +33,7 @@ class _LoginState extends State<Login> {
         toolbarHeight: 0,
         backgroundColor: Colors.black12,
       ),
-      backgroundColor: Color(0xFF3b5999).withOpacity(.85),
+      backgroundColor: Color(0xFF3b5999),
       body: Stack(
         children: [
           Positioned(
@@ -98,9 +100,9 @@ class _LoginState extends State<Login> {
               borderRadius: BorderRadius.circular(24.0),
               elevation: 3.0,
               width: MediaQuery.of(context).size.width - 40,
-              height: 280,
+              height: 305,
               child: Container(
-                height: 250,
+                height: 270,
                 padding: EdgeInsets.only(top: 20),
                 width: MediaQuery.of(context).size.width - 40,
                 margin: EdgeInsets.symmetric(horizontal: 20),
@@ -108,16 +110,25 @@ class _LoginState extends State<Login> {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
+                      Text(
+                        'Login',
+                        style: GoogleFonts.openSans(
+                          color: Colors.black54,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: EdgeInsets.only(top: 25),
                         child: Column(
                           children: [
                             buildTextField(Icons.mail_outline, "E-mail", false,
                                 true, emailcontroller),
                             SizedBox(
-                              height: 10,
+                              height: 20,
                             ),
                             buildTextField(Icons.lock_outline, "Password", true,
                                 false, passwordcontroller),
@@ -147,12 +158,12 @@ class _LoginState extends State<Login> {
             ),
           ),
           Positioned(
-            top: 525,
+            top: 550,
             right: 0,
             left: 0,
             child: GestureDetector(
               onTap: () {
-                signin;
+                signin();
               },
               child: Center(
                 child: Container(
@@ -187,11 +198,11 @@ class _LoginState extends State<Login> {
   }
 
   Widget buildTextField(IconData icon, String hintText, bool isPassword,
-      bool isEmail, TextEditingController em) {
+      bool isEmail, TextEditingController cont) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextFormField(
-        controller: em,
+        controller: cont,
         obscureText: isPassword,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -207,7 +218,7 @@ class _LoginState extends State<Login> {
             borderSide: BorderSide(color: Palette.textColor1),
             borderRadius: BorderRadius.all(Radius.circular(35.0)),
           ),
-          contentPadding: EdgeInsets.all(10),
+          contentPadding: EdgeInsets.all(15),
           labelText: hintText,
           labelStyle: TextStyle(fontSize: 14, color: Palette.textColor1),
         ),

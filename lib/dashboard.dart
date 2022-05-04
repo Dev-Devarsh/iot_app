@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:iot_app/home.dart';
+import 'home.dart';
 import 'package:svg_icon/svg_icon.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
@@ -13,40 +16,6 @@ class Dasgboard extends StatefulWidget {
 }
 
 class _DasgboardState extends State<Dasgboard> {
-  Gridtile(String path, String FilePath, String text) {
-    return GestureDetector(
-        onTap: () => Navigator.of(context).pushNamed(path),
-        child: GlassContainer.clearGlass(
-          height: 140,
-          width: 140,
-          margin: EdgeInsets.all(10),
-          blur: 30.0,
-          borderWidth: 0.0,
-          borderRadius: BorderRadius.circular(24.0),
-          elevation: 3.0,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 15,
-              ),
-              SvgIcon(
-                FilePath,
-                height: 80,
-                width: 80,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-              )
-            ],
-          ),
-        ));
-  }
-
   final _advancedDrawerController = AdvancedDrawerController();
   @override
   Widget build(BuildContext context) {
@@ -179,7 +148,10 @@ class _DasgboardState extends State<Dasgboard> {
                   title: Text('Home'),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => home()));
+                  },
                   leading: Icon(Icons.account_circle_rounded),
                   title: Text('Profile'),
                 ),
@@ -187,6 +159,13 @@ class _DasgboardState extends State<Dasgboard> {
                   onTap: () {},
                   leading: Icon(Icons.settings),
                   title: Text('Settings'),
+                ),
+                ListTile(
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                  leading: Icon(Icons.logout),
+                  title: Text('Log Out'),
                 ),
                 Spacer(),
                 DefaultTextStyle(
@@ -213,5 +192,39 @@ class _DasgboardState extends State<Dasgboard> {
     // NOTICE: Manage Advanced Drawer state through the Controller.
     // _advancedDrawerController.value = AdvancedDrawerValue.visible();
     _advancedDrawerController.showDrawer();
+  }
+
+  Widget Gridtile(String path, String FilePath, String text) {
+    return GestureDetector(
+        onTap: () => Navigator.of(context).pushNamed(path),
+        child: GlassContainer.clearGlass(
+          height: 140,
+          width: 140,
+          margin: EdgeInsets.all(10),
+          blur: 30.0,
+          borderWidth: 0.0,
+          borderRadius: BorderRadius.circular(24.0),
+          elevation: 3.0,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 15,
+              ),
+              SvgIcon(
+                FilePath,
+                height: 80,
+                width: 80,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              )
+            ],
+          ),
+        ));
   }
 }
