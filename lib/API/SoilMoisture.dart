@@ -22,8 +22,8 @@ class _soilState extends State<soil> {
   }
 
   Future getData() async {
-    var resp = await http.get(Uri.parse(
-        'https://infobuddy.000webhostapp.com/API/soil_moisture_fetch.php'));
+    var resp = await http
+        .get(Uri.parse('https://intiotpro.000webhostapp.com/API/fetch_sm.php'));
     setState(() {
       List respJson = json.decode(resp.body)["soil"];
       setState(() {

@@ -55,12 +55,7 @@ class _MainState extends State<Main> {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-                child: CircularProgressIndicator(
-              backgroundColor: Colors.white12,
-            ));
-          } else if (snapshot.hasError) {
+          if (snapshot.hasError) {
             return Center(
               child: Text('Something went wrong'),
             );

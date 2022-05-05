@@ -2,14 +2,14 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iot_app/Login-signup/signup_screen.dart';
 import '../dashboard.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:svg_icon/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/palette.dart';
-
 import '../main.dart';
 
 class Login extends StatefulWidget {
@@ -22,6 +22,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final emailcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
+  bool isLogedin = false;
 
   @override
   void dispose() {
@@ -142,12 +143,21 @@ class _LoginState extends State<Login> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('Create an account'),
+                                Text('Create an account',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => SignUp()));
+                                  },
                                   child: Text("Sign up",
                                       style: TextStyle(
-                                          fontSize: 12,
+                                          decoration: TextDecoration.underline,
+                                          fontSize: 15,
                                           color: Palette.textColor1,
                                           fontWeight: FontWeight.w800)),
                                 ),
@@ -236,6 +246,23 @@ class _LoginState extends State<Login> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailcontroller.text.trim(),
           password: passwordcontroller.text.trim());
+      setState(() {
+        isLogedin = true;
+      });
+      if (isLogedin) {
+        Fluttertoast.showToast(
+          msg: "SignIn Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          backgroundColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
+          fontSize: 14,
+        );
+        // if (isLogedin) {
+        //   Navigator.push(
+        //       context, MaterialPageRoute(builder: (context) => Dasgboard()));
+        // }
+      }
     } on FirebaseAuthException catch (e) {
       print(e);
     }

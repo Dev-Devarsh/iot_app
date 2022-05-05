@@ -1,28 +1,35 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:iot_app/Login-signup/login_screen.dart';
+import 'package:iot_app/main.dart';
 import '../dashboard.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:svg_icon/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/palette.dart';
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:iot_app/main.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
-  final emailcontroller = TextEditingController();
-  final passwordcontroller = TextEditingController();
+class _SignUpState extends State<SignUp> {
+  final emailcontroller1 = TextEditingController();
+  final passwordcontroller1 = TextEditingController();
   bool isMale = true;
+  bool isSignUp = false;
   @override
   void dispose() {
-    emailcontroller.dispose();
-    passwordcontroller.dispose();
+    emailcontroller1.dispose();
+    passwordcontroller1.dispose();
     super.dispose();
   }
 
@@ -33,7 +40,7 @@ class _LoginState extends State<Login> {
         toolbarHeight: 0,
         backgroundColor: Colors.black12,
       ),
-      backgroundColor: Color(0xFF3b5999).withOpacity(.85),
+      backgroundColor: Color(0xFF3b5999),
       body: Stack(
         children: [
           Positioned(
@@ -111,104 +118,52 @@ class _LoginState extends State<Login> {
                 ),
                 child: Column(
                   children: [
+                    Center(
+                      child: Text(
+                        'Sign UP',
+                        style: GoogleFonts.openSans(
+                          color: Colors.black54,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                     Container(
                       margin: EdgeInsets.only(top: 20),
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: buildTextField2(CommunityMaterialIcons.account, 'User Name', false, false)
-                          ),
+                          buildTextField2(
+                              Icons.email_outlined, "E-mail", false, true),
                           SizedBox(
                             height: 10,
                           ),
                           buildTextField2(
-                              Icons.email_outlined, "email", false, true),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          buildTextField2(
-                              Icons.lock_outline, "password", true, false),
+                              Icons.lock_outline, "Password", false, false),
                           SizedBox(
                             height: 10,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isMale = true;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 30,
-                                      height: 30,
-                                      margin: EdgeInsets.only(right: 8),
-                                      decoration: BoxDecoration(
-                                          color: isMale
-                                              ? Palette.textColor2
-                                              : Colors.transparent,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: isMale
-                                                  ? Colors.transparent
-                                                  : Palette.textColor1),
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: Icon(
-                                        CommunityMaterialIcons.account,
-                                        color: isMale
-                                            ? Colors.white
-                                            : Palette.iconColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      "User",
-                                      style: TextStyle(color: Colors.black),
-                                    )
-                                  ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Already have an account',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Login()));
+                                  },
+                                  child: Text("Log in",
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          fontSize: 15,
+                                          color: Palette.textColor1,
+                                          fontWeight: FontWeight.w800)),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isMale = false;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 30,
-                                      height: 30,
-                                      margin: EdgeInsets.only(right: 8),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: isMale
-                                            ? Colors.transparent
-                                            : Palette.textColor2,
-                                      ),
-                                      child: Icon(
-                                        Icons.admin_panel_settings_outlined,
-                                        color: isMale
-                                            ? Palette.iconColor
-                                            : Colors.white,
-                                      ),
-                                    ),
-                                    Text(
-                                      "Admin",
-                                      style: TextStyle(color: Colors.black),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                              ]),
                         ],
                       ),
                     ),
@@ -222,7 +177,9 @@ class _LoginState extends State<Login> {
             right: 0,
             left: 0,
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Signup();
+              },
               child: Center(
                 child: Container(
                     height: 90,
@@ -282,33 +239,27 @@ class _LoginState extends State<Login> {
     );
   }
 
+  Future Signup() async {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailcontroller1.text.trim(),
+        password: passwordcontroller1.text.trim());
 
+    setState(() {
+      isSignUp = true;
+    });
+    if (isSignUp) {
+      Fluttertoast.showToast(
+        msg: "SignUp Successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 14,
+      );
+      if (isSignUp) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Dasgboard()));
+      }
+    }
+  }
 }
-
-
-
-
-// TextFormField(
-//                               decoration: InputDecoration(
-//                                 prefixIcon: Icon(
-//                                   CommunityMaterialIcons.account,
-//                                   color: Palette.iconColor,
-//                                 ),
-//                                 enabledBorder: OutlineInputBorder(
-//                                   borderSide:
-//                                       BorderSide(color: Palette.textColor1),
-//                                   borderRadius:
-//                                       BorderRadius.all(Radius.circular(35.0)),
-//                                 ),
-//                                 focusedBorder: OutlineInputBorder(
-//                                   borderSide:
-//                                       BorderSide(color: Palette.textColor1),
-//                                   borderRadius:
-//                                       BorderRadius.all(Radius.circular(35.0)),
-//                                 ),
-//                                 contentPadding: EdgeInsets.all(10),
-//                                 labelText: 'User Name',
-//                                 labelStyle: TextStyle(
-//                                     fontSize: 14, color: Palette.textColor1),
-//                               ),
-//                             ),
