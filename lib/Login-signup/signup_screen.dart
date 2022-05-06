@@ -177,9 +177,8 @@ class _SignUpState extends State<SignUp> {
             right: 0,
             left: 0,
             child: Center(
-              child: InkWell(
+              child: GestureDetector(
                 onTap: () {
-                  print('button');
                   signup();
                 },
                 child: Container(
