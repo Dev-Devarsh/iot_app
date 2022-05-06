@@ -270,8 +270,8 @@ class _SignUpState extends State<SignUp> {
         );
       }
     } catch (e) {
-      Fluttertoast.showToast(
-          msg: "Something Went wrong",
+       Fluttertoast.showToast(
+          msg: "Please Enter email or password",
           toastLength: Toast.LENGTH_LONG,
           backgroundColor: Colors.black,
           gravity: ToastGravity.BOTTOM,

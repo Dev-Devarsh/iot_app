@@ -269,13 +269,13 @@ class _LoginState extends State<Login> {
       }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
-        msg: "Something Went wrong",
-        toastLength: Toast.LENGTH_LONG,
-        backgroundColor: Colors.black,
-        gravity: ToastGravity.BOTTOM,
-        textColor: Colors.white,
-        fontSize: 14,
-      );
+          msg: "Please Enter email or password",
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
+          fontSize: 14,
+        );
     }
   }
 }
