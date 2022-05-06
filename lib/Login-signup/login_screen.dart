@@ -179,6 +179,7 @@ class _LoginState extends State<Login> {
             child: GestureDetector(
               onTap: () {
                 signin();
+                print('jhkuf');
               },
               child: Center(
                 child: Container(
@@ -243,28 +244,38 @@ class _LoginState extends State<Login> {
 
   Future signin() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailcontroller.text.trim(),
           password: passwordcontroller.text.trim());
-      setState(() {
-        isLogedin = true;
-      });
-      if (isLogedin) {
+
+      if (user != null) {
         Fluttertoast.showToast(
-          msg: "SignIn Successfully",
-          toastLength: Toast.LENGTH_SHORT,
+          msg: "SignUp successfull",
+          toastLength: Toast.LENGTH_LONG,
           backgroundColor: Colors.black,
           gravity: ToastGravity.BOTTOM,
           textColor: Colors.white,
           fontSize: 14,
         );
-        // if (isLogedin) {
-        //   Navigator.push(
-        //       context, MaterialPageRoute(builder: (context) => Dasgboard()));
-        // }
+      } else {
+        Fluttertoast.showToast(
+          msg: "Please Enter email or password",
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
+          fontSize: 14,
+        );
       }
     } on FirebaseAuthException catch (e) {
-      print(e);
+      Fluttertoast.showToast(
+        msg: "Something Went wrong",
+        toastLength: Toast.LENGTH_LONG,
+        backgroundColor: Colors.black,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
+        fontSize: 14,
+      );
     }
   }
 }

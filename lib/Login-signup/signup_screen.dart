@@ -22,8 +22,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final emailcontroller1 = TextEditingController();
-  final passwordcontroller1 = TextEditingController();
+  TextEditingController emailcontroller1 = TextEditingController();
+  TextEditingController passwordcontroller1 = TextEditingController();
   bool isMale = true;
   bool isSignUp = false;
   @override
@@ -132,13 +132,13 @@ class _SignUpState extends State<SignUp> {
                       margin: EdgeInsets.only(top: 20),
                       child: Column(
                         children: [
-                          buildTextField2(
-                              Icons.email_outlined, "E-mail", false, true),
+                          buildTextField2(Icons.email_outlined, "E-mail", false,
+                              true, emailcontroller1),
                           SizedBox(
                             height: 10,
                           ),
-                          buildTextField2(
-                              Icons.lock_outline, "Password", false, false),
+                          buildTextField2(Icons.lock_outline, "Password", false,
+                              false, passwordcontroller1),
                           SizedBox(
                             height: 10,
                           ),
@@ -176,11 +176,12 @@ class _SignUpState extends State<SignUp> {
             top: 525,
             right: 0,
             left: 0,
-            child: GestureDetector(
-              onTap: () {
-                Signup();
-              },
-              child: Center(
+            child: Center(
+              child: InkWell(
+                onTap: () {
+                  print('button');
+                  signup();
+                },
                 child: Container(
                     height: 90,
                     width: 90,
@@ -206,18 +207,19 @@ class _SignUpState extends State<SignUp> {
                     )),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget buildTextField2(
-      IconData icon, String hintText, bool isPassword, bool isEmail) {
+  Widget buildTextField2(IconData icon, String hintText, bool isPassword,
+      bool isEmail, TextEditingController em) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextFormField(
         obscureText: isPassword,
+        controller: em,
         decoration: InputDecoration(
           prefixIcon: Icon(
             icon,
@@ -239,27 +241,43 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  Future Signup() async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailcontroller1.text.trim(),
-        password: passwordcontroller1.text.trim());
+  Future signup() async {
+    try {
+      final newuser = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailcontroller1.text.trim(),
+              password: passwordcontroller1.text.trim());
 
-    setState(() {
-      isSignUp = true;
-    });
-    if (isSignUp) {
-      Fluttertoast.showToast(
-        msg: "SignUp Successfully",
-        toastLength: Toast.LENGTH_SHORT,
-        backgroundColor: Colors.black,
-        gravity: ToastGravity.BOTTOM,
-        textColor: Colors.white,
-        fontSize: 14,
-      );
-      if (isSignUp) {
+      if (newuser != null) {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Dasgboard()));
+             Fluttertoast.showToast(
+          msg: "SignUp successfull",
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
+          fontSize: 14,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Please Enter email or password",
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
+          fontSize: 14,
+        );
       }
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Something Went wrong",
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
+          fontSize: 14,
+        );
     }
   }
 }
