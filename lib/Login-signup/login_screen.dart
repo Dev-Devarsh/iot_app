@@ -250,7 +250,7 @@ class _LoginState extends State<Login> {
 
       if (user != null) {
         Fluttertoast.showToast(
-          msg: "SignUp successfull",
+          msg: "Login successfull",
           toastLength: Toast.LENGTH_LONG,
           backgroundColor: Colors.black,
           gravity: ToastGravity.BOTTOM,

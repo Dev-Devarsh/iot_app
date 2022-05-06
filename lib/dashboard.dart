@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -162,7 +164,7 @@ class _DasgboardState extends State<Dasgboard> {
                 ),
                 ListTile(
                   onTap: () {
-                    FirebaseAuth.instance.signOut();
+                    _signout();
                   },
                   leading: Icon(Icons.logout),
                   title: Text('Log Out'),
@@ -189,8 +191,6 @@ class _DasgboardState extends State<Dasgboard> {
   }
 
   void _handleMenuButtonPressed() {
-    // NOTICE: Manage Advanced Drawer state through the Controller.
-    // _advancedDrawerController.value = AdvancedDrawerValue.visible();
     _advancedDrawerController.showDrawer();
   }
 
@@ -226,5 +226,9 @@ class _DasgboardState extends State<Dasgboard> {
             ],
           ),
         ));
+  }
+
+  Future<void> _signout() async {
+    await FirebaseAuth.instance.signOut();
   }
 }
